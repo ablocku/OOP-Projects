@@ -9,44 +9,50 @@ int maxi, poz;
 
 
 class Vector{
-    int v[1000001], n;
+    int *v;
+    int n;
 public:
 
-    Vector(int x, int n);
+    Vector(int n1, int x);
     Vector();
     Vector(const Vector &v2);
     ~Vector();
-    Vector operator = (Vector const &v2);
-    Vector update(int n1, int x);
-    long long sum(const Vector v1);
-    tuplu max(const Vector v1);
-    void sort(Vector &v1, int p, int q);
-    int partitionare(Vector &v1,int p, int q);
+    void operator = (Vector const &v2);
+    void update(int n1, int x);
+    long long sum();
+    tuplu max();
+    void sort(int p, int q);
+    int partitionare(int p, int q);
     int operator * (Vector const &v2);
+    friend istream &operator >>(istream &input,Vector &v1);
+    friend ostream &operator <<(ostream &output, Vector v1);
+    int len();
 };
 
 
-Vector::Vector(int x, int n)
+Vector::Vector(int n1, int x)
 {
-    int i;
-    for(i=1;i<=n;i++)
-        v[i]=x;
+    n = n1;
+    v = new int[n];
+    for(int i=0; i < n; ++i)
+        v[i] = x;
 }
 
 Vector::Vector()
 {
-    int i;
-    n = 1000001;
-    for(i=1;i<=n;i++)
-        v[i]=0;
+    n = 10005;
+    v = new int[n];
+    for(int i = 0; i < n; ++i)
+        v[i] = 0;
 }
 
 Vector::Vector(const Vector &v2)
 {
     n=v2.n;
+    v = new int[n];
     int i;
-    for(i=1;i<=n;i++)
-        v[i]=v2.v[i];
+    for(i = 0;i < n; ++i)
+        v[i] = v2.v[i];
 }
 
 Vector::~Vector()
@@ -55,80 +61,81 @@ Vector::~Vector()
     delete []v;
 }
 
-Vector Vector::operator = (Vector const &v2)
+void Vector::operator = (Vector const &v2)
 {
-Vector res;
-res.n = v2.n;
+delete []v;
+n = v2.n;
+v = new int[n];
 int i;
-for(i=1;i<=n;i++)
-    res.v[i]=v2.v[i];
-return res;
+for(i = 0; i < n; ++i)
+    v[i] = v2.v[i];
 }
 
-Vector Vector::update(int n1, int x)
+void Vector::update(int n1, int x)
 {
 delete []v;
 n = n1;
 int i;
-for(i=1;i<=n;i++)
+v = new int[n];
+for(i = 0 ;i < n; ++i)
     v[i] = x;
 }
 
-long long Vector::sum(const Vector v1)
+long long Vector::sum()
 {
 int i;
 long long s=0;
-for(i=1;i<=v1.n;i++)
-    s+=v1.v[i];
+for(i = 0; i < n; ++i)
+    s+= v[i];
 return s;
 }
 
-tuplu Vector::max(const Vector v1)
+tuplu Vector::max()
 {
 tuplu rez;
-rez.maxi = v1.v[1];
-rez.poz = 1;
+rez.maxi = v[0];
+rez.poz = 0;
 int i;
-for(i=2;i<=v1.n;i++)
-    if(v1.v[i]>rez.maxi)
+for(i = 1; i < n; ++i)
+    if(v[i]>rez.maxi)
         {
-        rez.maxi = v1.v[i];
+        rez.maxi = v[i];
         rez.poz = i;
         }
 return rez;
 }
 
-void Vector::sort(Vector &v1, int p, int q)
+void Vector::sort(int p, int q)
 {
-int k = partitionare(v1,p,q);
+int k = partitionare(p,q);
 if (p<k-1)
-    sort(v1,p,k-1);
+    sort(p,k-1);
 if(k+1<q)
-    sort(v1,k+1,q);
+    sort(k+1,q);
 }
 
-int Vector::partitionare(Vector &v1, int p, int q)
+int Vector::partitionare(int p, int q)
 {
-int x = v1.v[p];
+int x = v[p];
 int i,j;
 i = p+1;
 j = q;
 while(i<=j)
     {
-    if(v1.v[i] <= x)
+    if(v[i] <= x)
         i++;
-    if(v1.v[j] >= x)
+    if(v[j] >= x)
         j--;
-    if(v1.v[i] > x and v1.v[j] < x and i < j)
+    if(v[i] > x and v[j] < x and i < j)
         {
-        int aux = v1.v[i];
-        v1.v[i] = v1.v[j];
-        v1.v[j] = aux;
+        int aux = v[i];
+        v[i] = v[j];
+        v[j] = aux;
         i++; j--;
         }
     }
-v1.v[p] = v1.v[j];
-v1.v[j] = x;
+v[p] = v[j];
+v[j] = x;
 return j;
 }
 
@@ -136,15 +143,74 @@ int Vector::operator * (Vector const &v2)
 {
 int p = 0,i;
 if(n > v2.n)
-    for(i=1;i<=v2.n;i++)
-        p += v[i]*v2.v[i];
+    for(i = 0; i < v2.n; ++i)
+        p += v[i] * v2.v[i];
 else
-    for(i=1;i<=n;i++)
+    for(i = 0;i < n; ++i)
         p += v[i]*v2.v[i];
 return p;
 }
 
+istream& operator >>(istream &input, Vector &v1)
+{
+    input>>v1.n;
+    int i;
+    for(i = 0; i < v1.n; ++i)
+        input>>v1.v[i];
+    return input;
+}
+
+ostream& operator <<(ostream &output, Vector v1)
+{
+    output<<v1.n<<'\n';
+    int i;
+    for(i = 0; i < v1.n; ++i)
+        output<< v1.v[i]<<' ';
+    output<<'\n';
+    return output;
+}
+
+int Vector::len()
+{
+    return n;
+}
+
+void runTests()
+{
+cout<<"Constructor de initializare cu o valoare:"<<'\n';
+Vector v2(3,5);
+cout<<v2<<'\n';
+cout<<"Constructor de copiere:"<<'\n';
+Vector v3 = v2;
+cout<<v3<<'\n';
+cout<<"Constructor de initializare cu un alt vector:"<<'\n';
+Vector v4(v2);
+cout<<v4<<'\n';
+cout<<"Supraincarcare la '=' :"<<'\n';
+cin>>v3;
+v2 = v3;
+cout<<v2<<'\n';
+cout<<"Metoda update: "<<'\n';
+v2.update(5,5);
+cout<<v2<<'\n';
+cout<<"Metoda max pt aflarea maximului si pozitiei lui -cititi un vector mai variat,urmeaza si sortarea acestuia-:"<<'\n';
+cin>>v2;
+tuplu rez = v2.max();
+cout<<rez.maxi << ' ' << rez.poz<<'\n';
+cout<<"Metoda pt aflarea sumei elementelor vectorului:"<<'\n';
+cout<<v2.sum()<<'\n';
+v2.sort(0,v2.len()-1);
+cout<<v2<<'\n';
+cout<<"Supraincarcarea lui '*' pt aflarea produsului scalar a 2 vectori"<<'\n';
+cout<<v3*v2<<'\n';
+cout<<"Constructor pt initializare cu 0 pe toate pozitiile de la 0 la n-1 cu n = 10005:" << '\n';
+Vector v1;
+cout<<v1;
+}
+
+
 int main()
 {
+runTests();
 return 0;
 }
