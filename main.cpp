@@ -2,8 +2,6 @@
 #include <fstream>
 using namespace std;
 
-ifstream f("date.in");
-ofstream g("date.out");
 
 struct tuplu
 {
