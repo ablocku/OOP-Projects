@@ -5,11 +5,12 @@ using namespace std;
 
 struct tuplu
 {
-int maxi, poz;
+    int maxi, poz;
 };
 
 
-class Vector{
+class Vector
+{
     int *v;
     int n;
 
@@ -36,36 +37,37 @@ public:
 private:
     void sort(int p, int q)
     {
-    int k = partitionare(p,q);
-    if (p<k-1)
-        sort(p,k-1);
-    if(k+1<q)
-        sort(k+1,q);
+        int k = partitionare(p,q);
+        if (p<k-1)
+            sort(p,k-1);
+        if(k+1<q)
+            sort(k+1,q);
     }
 
     int partitionare(int p, int q)
     {
-    int x = v[p];
-    int i,j;
-    i = p+1;
-    j = q;
-    while(i<=j)
+        int x = v[p];
+        int i,j;
+        i = p+1;
+        j = q;
+        while(i<=j)
         {
-        if(v[i] <= x)
-            i++;
-        if(v[j] >= x)
-            j--;
-        if(v[i] > x and v[j] < x and i < j)
+            if(v[i] <= x)
+                i++;
+            if(v[j] >= x)
+                j--;
+            if(i <= q and j >= p and v[i] > x and v[j] < x and i < j)
             {
-            int aux = v[i];
-            v[i] = v[j];
-            v[j] = aux;
-            i++; j--;
+                int aux = v[i];
+                v[i] = v[j];
+                v[j] = aux;
+                i++;
+                j--;
             }
         }
-    v[p] = v[j];
-    v[j] = x;
-    return j;
+        v[p] = v[j];
+        v[j] = x;
+        return j;
     }
 
 
@@ -86,7 +88,7 @@ Vector::Vector(const Vector &v2)
     n=v2.n;
     v = new int[n];
     int i;
-    for(i = 0;i < n; ++i)
+    for(i = 0; i < n; ++i)
         v[i] = v2.v[i];
 }
 
@@ -112,7 +114,7 @@ void Vector::update(int n1, int x)
     n = n1;
     int i;
     v = new int[n];
-    for(i = 0 ;i < n; ++i)
+    for(i = 0 ; i < n; ++i)
         v[i] = x;
 }
 
@@ -133,10 +135,10 @@ tuplu Vector::max()
     int i;
     for(i = 1; i < n; ++i)
         if(v[i]>rez.maxi)
-            {
+        {
             rez.maxi = v[i];
             rez.poz = i;
-            }
+        }
     return rez;
 }
 
@@ -149,7 +151,7 @@ int Vector::operator * (Vector const &v2)
     else
         mini = n;
     for(i = 0; i < mini; ++i)
-            p += v[i] * v2.v[i];
+        p += v[i] * v2.v[i];
 
     return p;
 }
@@ -157,6 +159,8 @@ int Vector::operator * (Vector const &v2)
 istream& operator >>(istream &input, Vector &v1)
 {
     input>>v1.n;
+    delete[] v1.v;
+    v1.v = new int[v1.n];
     int i;
     for(i = 0; i < v1.n; ++i)
         input>>v1.v[i];
@@ -208,14 +212,13 @@ void runTests()
     cout<<v2<<'\n';
     cout<<"Supraincarcarea lui '*' pt aflarea produsului scalar a 2 vectori"<<'\n';
     cout<<v3*v2<<'\n'<<'\n';
-    cout<<"Constructor pt initializare cu 0 pe toate pozitiile de la 0 la n-1 cu n = 10005:" << '\n';
 }
 
 
 int main()
 {
-freopen("date.in","r",stdin);
-freopen("date.out","w",stdout);
-runTests();
-return 0;
+    freopen("date.in","r",stdin);
+    freopen("date.out","w",stdout);
+    runTests();
+    return 0;
 }
