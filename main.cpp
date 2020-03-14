@@ -23,8 +23,7 @@ public:
         sort(0,n-1);
     }
 
-    Vector(int n1, int x = 0);
-    Vector();
+    Vector(int n1, int x);
     Vector(const Vector &v2);
     ~Vector();
     void operator = (Vector const &v2);
@@ -76,12 +75,12 @@ private:
 
 
 
-Vector::Vector()
+Vector::Vector(int n1, int x)
 {
-    n = 10005;
+    n = n1;
     v = new int[n];
     for(int i = 0; i < n; ++i)
-        v[i] = 0;
+        v[i] = x;
 }
 
 Vector::Vector(const Vector &v2)
@@ -185,33 +184,33 @@ int Vector::len()
 
 void runTests()
 {
-Vector v2;
-cout<<"Constructor de copiere:"<<'\n';
-Vector v3 = v2;
-cout<<v3<<'\n';
-cout<<"Constructor de initializare cu un alt vector:"<<'\n';
-Vector v4(v2);
-cout<<v4<<'\n';
-cout<<"Supraincarcare la '=' :"<<'\n';
-cin>>v3;
-v2 = v3;
-cout<<v2<<'\n';
-cout<<"Metoda update: "<<'\n';
-v2.update(5,5);
-cout<<v2<<'\n';
-cout<<"Metoda max pt aflarea maximului si pozitiei lui :"<<'\n';
-cin>>v2;
-tuplu rez = v2.max();
-cout<<v2;
-cout<<"Maximul este: "<<rez.maxi << " pe pozitia: " << rez.poz<<'\n'<<'\n';;
-cout<<"Metoda pt aflarea sumei elementelor vectorului:"<<'\n';
-cout<<v2.sum()<<'\n'<<'\n';;
-cout<<"Metoda pentru sortarea vectorului: "<<'\n';
-v2.sort();
-cout<<v2<<'\n';
-cout<<"Supraincarcarea lui '*' pt aflarea produsului scalar a 2 vectori"<<'\n';
-cout<<v3*v2<<'\n'<<'\n';
-cout<<"Constructor pt initializare cu 0 pe toate pozitiile de la 0 la n-1 cu n = 10005:" << '\n';
+    Vector v2(5,2);
+    cout<<"Constructor de copiere:"<<'\n';
+    Vector v3 = v2;
+    cout<<v3<<'\n';
+    cout<<"Constructor de initializare cu un alt vector:"<<'\n';
+    Vector v4(v2);
+    cout<<v4<<'\n';
+    cout<<"Supraincarcare la '=' :"<<'\n';
+    cin>>v3;
+    v2 = v3;
+    cout<<v2<<'\n';
+    cout<<"Metoda update: "<<'\n';
+    v2.update(5,5);
+    cout<<v2<<'\n';
+    cout<<"Metoda max pt aflarea maximului si pozitiei lui :"<<'\n';
+    cin>>v2;
+    tuplu rez = v2.max();
+    cout<<v2;
+    cout<<"Maximul este: "<<rez.maxi << " pe pozitia: " << rez.poz<<'\n'<<'\n';
+    cout<<"Metoda pt aflarea sumei elementelor vectorului:"<<'\n';
+    cout<<v2.sum()<<'\n'<<'\n';;
+    cout<<"Metoda pentru sortarea vectorului: "<<'\n';
+    v2.sort();
+    cout<<v2<<'\n';
+    cout<<"Supraincarcarea lui '*' pt aflarea produsului scalar a 2 vectori"<<'\n';
+    cout<<v3*v2<<'\n'<<'\n';
+    cout<<"Constructor pt initializare cu 0 pe toate pozitiile de la 0 la n-1 cu n = 10005:" << '\n';
 }
 
 
