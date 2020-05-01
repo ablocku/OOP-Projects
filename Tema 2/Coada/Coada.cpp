@@ -4,52 +4,38 @@
 #include <iostream>
 
 
-Coada::Coada()//constructor
+Coada::Coada() {}
+
+Coada::Coada(const Coada& c) : Vector(c) {}
+
+Coada::~Coada()
 {
     dim = 0;
-    v = new Complex[dim];
+    delete[] v;
 }
 
-Coada::Coada(const Coada &c)//constructor de copiere
+
+Complex Coada::front()
 {
-    dim = c.dim;
-    v = new Complex[dim];
-    for(int i = 0; i < dim; ++i)
-        v[i] = c.v[i];
+    if(!empty())
+        return v[0];
+    else
+        return Complex(-1,-1);
 }
 
-Coada::~Coada()//destructor
+void Coada::pop()
 {
-    dim = 0;
-    delete []v;
-}
-
-Complex Coada::front()//primul element
-{
-    return this->v[0];
-}
-
-void Coada::push(const Complex x)//adauga un element
-{
-    if(this->dim == 0)
+    if(!empty())
     {
-        this->dim = 1;
-        this->v = new Complex[this->dim];
+        for(int i = 0; i < dim - 1; ++i)
+            v[i] = v[i + 1];
+        dim--;
     }
-    this->dim++;
-    this->v[this->dim - 1] = x;
-}
-
-void Coada::pop()//stergerea
-{
-    for(int i = 0; i < this->dim - 1; ++i)
-        this->v[i] = this->v[i + 1];
-    this->dim--;
-}
-
-bool Coada::empty()
-{
-    return (this->dim == 0);
+    if(dim == 0)
+        {
+        emp = true;
+        v[0] = Complex(0,0);
+        }
 }
 
 bool Coada::imaginar()
@@ -59,32 +45,6 @@ bool Coada::imaginar()
         if(this->v[i].getRe() != x)
             return false;
     return true;
-}
-
-Coada & Coada::operator=(Coada const &c)
-{
-    this->dim = c.dim;
-    delete []this->v;
-    v = new Complex[dim];
-    for(int i = 0; i < this->dim; ++i)
-        this->v[i] = c.v[i];
-    return *this;
-}
-
-std::istream& operator >>(std::istream &input, Coada &c)
-{
-    input >> c.dim;
-    for(int i = 0; i < c.dim; ++i)
-        input >> c.v[i];
-    return input;
-}
-
-std::ostream& operator <<(std::ostream &output, Coada const c)
-{
-    output << c.dim << '\n';
-    for(int i = 0; i < c.dim; ++i)
-        output << c.v[i] << ' ';
-    return output;
 }
 
 
