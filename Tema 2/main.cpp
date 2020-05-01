@@ -41,10 +41,10 @@ void StivaTests(Stiva S, ostream &g)
 {
     g << "-->Constructor: " << S << '\n';
     Stiva S1(S);
-    g << "-->Constructor de copiere: " << S1 << '\n'; // aici se intampla ceva si am reusit sa imi dau seama ce
+    g << "-->Constructor de copiere: " << S1 << '\n';
     Complex x(2,5);
-    S1.push(x);
-    g << "-->Metoda push: " << S1 << '\n';
+    S1.add(x);
+    g << "-->Metoda add: " << S1 << '\n';
     S1.pop();
     g << "-->Metoda pop: " << S1 << '\n';
     S = S1;
@@ -64,8 +64,8 @@ void CoadaTests(Coada C, ostream &g)
     Coada C1(C);
     g << "-->Constructor de copiere: " << C1 << '\n';
     Complex x(2,5);
-    C1.push(x);
-    g << "-->Metoda push: " << C1 << '\n';
+    C1.add(x);
+    g << "-->Metoda add: " << C1 << '\n';
     C1.pop();
     g << "-->Metoda pop: " << C1 << '\n';
     C = C1;
@@ -75,7 +75,7 @@ void CoadaTests(Coada C, ostream &g)
     C.pop();
     C.pop();
     C.pop();
-    g << "-->Metoda empty: " << C.empty() << '\n';
+    g << "-->Metoda empty: " << C.empty() << '\n' ;
 }
 
 void runTests(ifstream &f, ofstream &g)
@@ -92,7 +92,6 @@ void runTests(ifstream &f, ofstream &g)
         VectorTests(V, g);
         Stiva S;
         f >> S;
-        g << S << '\n';
         StivaTests(S, g);
         Coada C;
         f >> C;
