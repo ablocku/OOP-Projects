@@ -1,77 +1,44 @@
 #include "Stiva.h"
-#include "Complex.h"
 #include "Vector.h"
+#include "Complex.h"
+#include <iostream>
 
-Stiva::Stiva()//constructor
-{
-    dim = 0;
-    v = new Complex[dim];
-}
 
-Stiva::Stiva(const Stiva &s)//constructorul de copiere
-{
-    dim = s.dim;
-    v = new Complex[dim];
-    for(int i = 0; i < dim; ++i)
-        v[i] = s.v[i];
-}
+Stiva::Stiva() {}
 
-Stiva::~Stiva()//destructor
+Stiva::Stiva(const Stiva& s) : Vector(s) {}
+
+Stiva::~Stiva()
 {
     dim = 0;
     delete []v;
 }
 
-Complex Stiva::top()//returneaza varful stivei
+
+Complex Stiva::top()
 {
-    return this->v[0];
+    if(!empty())
+        return v[dim - 1];
+    else
+        return Complex(-1,-1);
 }
 
-void Stiva::pop()//elimina varful stivei
-{
-    for(int i = 0; i < this->dim; ++i)
-        this->v[i] = this->v[i+1];
-    this->dim--;
-}
 
-void Stiva::push(const Complex x)
+void Stiva::pop()
 {
-    if(this->dim == 0)
+    if(dim == 0)
+        emp = true;
+    if(!empty())
     {
-        this->dim = 1;
+        Stiva s(*this);
+        dim--;
+        delete[]v;
         v = new Complex[dim];
-        v[0] = x;
+        for(int i = 0; i < dim; ++i)
+            v[i] = s.v[i];
     }
     else
-    {
-        int dim_ = this->dim + 1;
-        Complex *v_;
-        v_ = new Complex[dim_];
-        for(int i = this->dim; i >= 0; --i)
-            v_[i+1] = this->v[i];
-        v_[0] = x;
-        delete []this->v;
-        this->dim = dim_;
-        v = new Complex[dim];
-        for(int i = 0; i < this->dim; ++i)
-            this->v[i] = v_[i];
-        delete []v_;
-    }
-}
-
-Stiva & Stiva::operator=(Stiva const &s)
-{
-    this->dim = s.dim;
-    delete []this->v;
-    v = new Complex[dim];
-    for(int i = 0; i < this->dim; ++i)
-        this->v[i] = s.v[i];
-    return *this;
-}
-
-bool Stiva::empty()
-{
-    return (this->dim == 0);
+        ;
 }
 
 bool Stiva::imaginar()
@@ -83,18 +50,3 @@ bool Stiva::imaginar()
     return true;
 }
 
-std::istream& operator >>(std::istream &input, Stiva &s)
-{
-    input >> s.dim;
-    for(int i = s.dim; i >= 0; --i)
-        input >> s.v[i];
-    return input;
-}
-
-std::ostream& operator <<(std::ostream &output, Stiva const s)
-{
-    output << s.dim << '\n';
-    for(int i = 0; i < s.dim; ++i)
-        output << s.v[i] << ' ';
-    return output;
-}
